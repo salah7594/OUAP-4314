@@ -1,0 +1,39 @@
+{% from "macros.html" import render_card, render_table %}
+
+{% from "dictionaries.html" import dict_author, dict_series, dict_comic %}
+
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+	<div class="container">
+		<h4 class="pink-text">Author</h4>
+		<div class="row">
+			<div class="col l8">
+				{{ render_card(output["document"]) }}
+			</div>
+			<div class="col l4">
+				{% if output["document"]["image"] is defined %}
+				<img src={{ output["document"]["image"] }} class="responsive-img">
+				{% endif %}
+			</div>
+		</div>
+
+		<h4 class="pink-text">Series</h4>
+		<div class="row">
+
+			{{ render_table(output["list_series"], dict_series["header"], dict_series["keys"], dict_series["redirect"]) }}
+
+		</div>
+
+		<h4 class="pink-text">Comics</h4>
+
+			{{ render_table(output["list_comic"], dict_comic["header"], dict_comic["keys"], dict_comic["redirect"]) }}
+
+	</div>
+
+{% endblock %}

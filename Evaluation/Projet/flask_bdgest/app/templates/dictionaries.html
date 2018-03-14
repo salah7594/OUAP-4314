@@ -1,0 +1,27 @@
+"""
+Template file with the dictionaries for author, series and comic which are used in the render_table functions of the "id" template files.
+"""
+
+
+{% set dict_author = {
+	"header": ['', 'First name', 'Last name', 'Nickname', 'Country'],
+	"keys": ["first_name", "last_name", "nickname", "country"],
+	"redirect": [["author", "author_id", "author_id"]]
+} %}
+
+{% set dict_series = {
+	"header": ['Author name', 'Name', 'ID', 'Genre'],
+	"keys": ["series_id", "genre"],
+	"redirect": [["author", "author_id", "author_name"],
+				 ["series", "series_id", "name"]]
+} %}
+
+{% set dict_comic = {
+	"header": ["Author", "Series", "Title", "ID", "Scenario", "Illustration", "Coloring", "Editor", "Format", "Legal deposit"],
+	"keys": ["comic_id", "scenario", "illustration", "coloring", "editor", "format", "legal_deposit"],
+	"redirect": [["author", "author_id", "author_name"],
+				 ["series", "series_id", "series_name"],
+				 ["", "url", "title"]]
+} %}
+
+

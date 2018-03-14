@@ -1,0 +1,22 @@
+{% from "macros.html" import render_card %}
+
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+	<div class="container">
+		<div class="row">
+			<div class="col l8">
+				{{ render_card("Author", output["document"]) }}
+			</div>
+			<div class="col l4">
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
