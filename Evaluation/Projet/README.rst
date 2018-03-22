@@ -25,3 +25,9 @@ Gracefully shut the containers down:
 .. code-block:: bash
 
     docker-compose down
+
+Note: the main docker-compose.yml works well with Debian operating systems. With a macos system, use the docker-compose_for_mac.yml file with the following command:
+
+.. code-block:: bash
+
+    docker-compose -f docker-compose_for_mac.yml up
