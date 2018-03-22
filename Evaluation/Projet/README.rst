@@ -2,7 +2,7 @@
 How to launch the project
 =========================
 
-Navigate to OUAP-4314/Evaluation/Projet and execute docker-compose:
+Navigate to OUAP-4314/Evaluation/Projet and start the containers:
 
 .. code-block:: bash
 
@@ -20,7 +20,7 @@ or:
 
     docker ps
 
-Shut the containers gracefully with:
+Shut the containers down gracefully with:
 
 .. code-block:: bash
 
