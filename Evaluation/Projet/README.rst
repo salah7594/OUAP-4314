@@ -14,13 +14,13 @@ Check if the containers are up using either:
 
     docker-compose ps
 
-or: 
+or:
 
 .. code-block:: bash
 
     docker ps
 
-Shut the containers down gracefully with:
+Gracefully shut the containers down:
 
 .. code-block:: bash
 
