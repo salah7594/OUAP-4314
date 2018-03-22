@@ -15,7 +15,7 @@ services:
     ports:
       - "1000:1000"
     volumes:
-      - "$PWD/flask_bdgest:/home/flask"
+      - "/flask_bdgest:/home/flask"
     links: 
       - mongo
   scrapy:
