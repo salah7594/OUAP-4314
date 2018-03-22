@@ -8,6 +8,13 @@ Navigate to OUAP-4314/Evaluation/Projet and start the containers:
 
     docker-compose up
 
+You can also start the containers in detached mode and check their logs:
+
+.. code-block:: bash
+
+    docker-compose up -d
+    docker-compose logs
+
 Check if the containers are up using either:
 
 .. code-block:: bash
@@ -25,9 +32,3 @@ Gracefully shut the containers down:
 .. code-block:: bash
 
     docker-compose down
-
-Note: the main docker-compose.yml works well with Linux distributions. With a macos system, use the docker-compose_for_mac.yml file with the following command:
-
-.. code-block:: bash
-
-    docker-compose -f docker-compose_for_mac.yml up
