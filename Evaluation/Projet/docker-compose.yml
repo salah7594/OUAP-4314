@@ -4,9 +4,7 @@ services:
     image: "mongo"
     container_name: mongo_container
     ports:
-      - "27017:27017"
-    volumes:
-      - "/Users/nico/engineering/bdgest_mongo_volume:/data/db"
+      - "27018:27017"
 
   flask:
     build:
@@ -17,7 +15,7 @@ services:
     ports:
       - "1000:1000"
     volumes:
-      - "/Users/nico/engineering/flask_bdgest:/home/flask"
+      - "/user/siml/Data-engineering/OUAP-4314/Evaluation/Projet/flask_bdgest:/home/flask"
     links: 
       - mongo
   scrapy:
@@ -26,7 +24,5 @@ services:
       dockerfile: Dockerfile
     image: scrapy_image
     container_name: scrapy_container
-    volumes:
-      - "/Users/nico/engineering/bdgest:/home/scrapy"
     links: 
       - mongo

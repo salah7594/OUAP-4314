@@ -13,7 +13,7 @@ import pymongo
 class MongoDBPipeline(object):
 
     def __init__(self):
-        connection = pymongo.MongoClient("mongo", 27017)
+        connection = pymongo.MongoClient("mongo")
         self.db = connection['bdgest']
 
     def process_item(self, item, spider):

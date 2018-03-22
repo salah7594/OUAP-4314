@@ -7,7 +7,7 @@ The author name consists of its first_name, last_name and nickname.
 
 from pymongo import MongoClient
 
-client = MongoClient("docker.for.mac.localhost", 27017)
+client = MongoClient("mongo")
 db = client['bdgest']
 
 def author_by_id(id):
