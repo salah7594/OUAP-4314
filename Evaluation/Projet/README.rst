@@ -21,12 +21,6 @@ Check if the containers are up using either:
 
     docker-compose ps
 
-or:
-
-.. code-block:: bash
-
-    docker ps
-
 Gracefully shut the containers down:
 
 .. code-block:: bash
