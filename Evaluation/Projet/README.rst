@@ -15,7 +15,7 @@ You can also start the containers in detached mode and check their logs:
     docker-compose up -d
     docker-compose logs
 
-Check if the containers are up using either:
+Check if the containers are up:
 
 .. code-block:: bash
 
