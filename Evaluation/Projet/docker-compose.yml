@@ -5,7 +5,8 @@ services:
     container_name: mongo_container
     ports:
       - "27017:27017"
-    network_mode: bridge
+    volumes:
+      - "/Users/nico/engineering/bdgest_mongo_volume:/data/db"
 
   flask:
     build:
@@ -15,12 +16,17 @@ services:
     container_name: flask_container
     ports:
       - "1000:1000"
-    network_mode: bridge
-
+    volumes:
+      - "/Users/nico/engineering/flask_bdgest:/home/flask"
+    links: 
+      - mongo
   scrapy:
     build:
       context: ./scrapy_bdgest/
       dockerfile: Dockerfile
     image: scrapy_image
     container_name: scrapy_container
-    network_mode: bridge
+    volumes:
+      - "/Users/nico/engineering/bdgest:/home/scrapy"
+    links: 
+      - mongo

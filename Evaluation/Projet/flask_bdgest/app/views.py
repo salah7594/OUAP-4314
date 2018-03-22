@@ -10,7 +10,7 @@ from app import app
 
 from pymongo import MongoClient
 
-client = MongoClient("localhost", 27017)
+client = MongoClient("mongo", 27017)
 db = client['bdgest']
 
 def series_by_id(id):
