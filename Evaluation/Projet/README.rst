@@ -27,7 +27,7 @@ Gracefully shut the containers down:
 
     docker-compose down
 
-To deploy the project on a Raspberry Pi:
+Deploy the project on a Raspberry Pi:
 
 .. code-block:: bash
 
