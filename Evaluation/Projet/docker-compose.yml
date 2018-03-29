@@ -16,6 +16,9 @@ services:
       - "1000:1000"
     links: 
       - mongo
+    volumes:
+      - "$PWD/flask_bdgest:/home/flask"
+
   scrapy:
     build:
       context: ./scrapy_bdgest/
