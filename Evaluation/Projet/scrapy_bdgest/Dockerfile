@@ -6,5 +6,5 @@ WORKDIR /home/scrapy/
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["scrapy crawl authors"]
-
+ENTRYPOINT ["scrapy"]
+CMD ["crawl", "authors"]
