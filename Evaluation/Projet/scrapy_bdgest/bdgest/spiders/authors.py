@@ -11,6 +11,10 @@ from ..items import AuthorsItem, SeriesItem, ComicsItem
 import unidecode
 import re
 import string
+from pymongo import MongoClient
+client = MongoCleint("mongo")
+client.drop_database("bdgest")
+
 
 class AuthorsSpider(scrapy.Spider):
 
