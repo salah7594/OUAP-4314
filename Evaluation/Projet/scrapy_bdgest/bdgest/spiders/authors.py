@@ -12,7 +12,7 @@ import unidecode
 import re
 import string
 from pymongo import MongoClient
-client = MongoCleint("mongo")
+client = MongoClient("mongo")
 client.drop_database("bdgest")
 
 
