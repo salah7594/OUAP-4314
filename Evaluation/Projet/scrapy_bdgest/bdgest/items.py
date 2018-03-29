@@ -12,7 +12,7 @@ import scrapy
 
 class AuthorsItem(scrapy.Item):
 
-    author_id = scrapy.Field()
+    _id = scrapy.Field()
     url = scrapy.Field()
     first_name = scrapy.Field()
     last_name = scrapy.Field()
@@ -25,7 +25,7 @@ class AuthorsItem(scrapy.Item):
 
 class SeriesItem(scrapy.Item):
 
-    series_id = scrapy.Field()
+    _id = scrapy.Field()
     url = scrapy.Field()
     name = scrapy.Field()
     author_id = scrapy.Field()
@@ -38,7 +38,7 @@ class SeriesItem(scrapy.Item):
 
 class ComicsItem(scrapy.Item):
 
-    comic_id = scrapy.Field()
+    _id = scrapy.Field()
     series_id = scrapy.Field()
     author_id = scrapy.Field()
     title = scrapy.Field()
