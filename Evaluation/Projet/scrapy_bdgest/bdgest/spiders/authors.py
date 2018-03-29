@@ -43,7 +43,7 @@ class AuthorsSpider(scrapy.Spider):
         for x in response.xpath('//ul[@class="auteur-info"]/li'):
             var_label = x.xpath('./label/text()').extract()[0].split(" ")[0]
             if var_label == 'Identifiant':
-                authors_item["author_id"] = x.xpath('./text()').extract()[0]
+                authors_item["_id"] = x.xpath('./text()').extract()[0]
             elif var_label == 'Nom':
                 if len(x.xpath('./span/text()').extract())>0:
                     authors_item["last_name"] = x.xpath('./span/text()').extract()[0]
@@ -99,7 +99,7 @@ class AuthorsSpider(scrapy.Spider):
         var_series_name = response.xpath('//h1/a/text()').extract()[0]
         series_item["url"] = response.url
         series_item["name"] = var_series_name
-        series_item["series_id"] = var_series_id
+        series_item["_id"] = var_series_id
         series_item["author_id"] = var_author_id
 
         for x in response.xpath('//ul[@class="serie-info"]/li'):
@@ -143,7 +143,7 @@ class AuthorsSpider(scrapy.Spider):
                     var_label = y.xpath('./label/text()').extract()[0].split(" ")[0]
                     var_label = var_label.lower()
                     if "identifiant" in var_label:
-                        if len(y.xpath('./text()').extract())>0: comics_item["comic_id"] = y.xpath('./text()').extract()[0]
+                        if len(y.xpath('./text()').extract())>0: comics_item["_id"] = y.xpath('./text()').extract()[0]
                     elif "scénario" in var_label:
                         if len(y.xpath('.//span/text()').extract())>0: comics_item["scenario"] = y.xpath('.//span/text()').extract()[0]
                     elif "dessin" in var_label:
