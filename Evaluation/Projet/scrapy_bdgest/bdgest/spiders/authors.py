@@ -71,7 +71,8 @@ class AuthorsSpider(scrapy.Spider):
         for x in ["first_name", "last_name", "nickname"]:
             if authors_item.get(x):
                 var_full_name += authors_item[x] + " "
-        authors_item["full_name"] = var_full_name.rstrip()
+        if var_full_name:
+            authors_item["full_name"] = var_full_name.rstrip()
         authors_item["url"] = response.url
         var_image = response.xpath('//div[@class="auteur-image"]//img/@src').extract()[0] #double slash in case //div/a/img
         if not var_image == "https://www.bdgest.com/skin/nophoto.png":
