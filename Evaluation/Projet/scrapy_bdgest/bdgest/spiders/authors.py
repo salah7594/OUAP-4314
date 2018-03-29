@@ -12,6 +12,7 @@ import unidecode
 import re
 import string
 from pymongo import MongoClient
+from datetime import datetime
 client = MongoClient("mongo")
 client.drop_database("bdgest")
 
@@ -160,7 +161,7 @@ class AuthorsSpider(scrapy.Spider):
                     elif "traduction" in var_label:
                         if len(y.xpath('./span/text()').extract())>0: comics_item["translation"] = y.xpath('./span/text()').extract()[0]
                     elif "dépot" in var_label:
-                        if len(y.xpath('./text()').extract())>0: comics_item["legal_deposit"] = y.xpath('./text()').extract()[1].strip()
+                        if len(y.xpath('./text()').extract())>0: comics_item["legal_deposit"] = datetime.strptime(y.xpath('./text()').extract()[1].strip(), "%m/%Y")
                     elif "editeur" in var_label:
                         if len(y.xpath('./text()').extract())>0: comics_item["editor"] = y.xpath('./text()').extract()[0]
                         elif len(y.xpath('./span/text()').extract())>0: comics_item["editor"] = y.xpath('./span/text()').extract()[0]                       
@@ -169,7 +170,7 @@ class AuthorsSpider(scrapy.Spider):
                     elif "format" in var_label:
                         if len(y.xpath('./text()').extract())>0: comics_item["format"] = y.xpath('./text()').extract()[0]
                     elif "isbn" in var_label:
-                        if len(y.xpath('./span/text()').extract())>0: comics_item["isbn"] = y.xpath('./span/text()').extract()[0]                                           
+                        if len(y.xpath('./span/text()').extract())>0: comics_item["isbn"] = y.xpath('./span/text()').extract()[0]
                     elif "planche" in var_label:
                         if len(y.xpath('./span/text()').extract())>0: comics_item["pages"] = y.xpath('./span/text()').extract()[0]  
 
