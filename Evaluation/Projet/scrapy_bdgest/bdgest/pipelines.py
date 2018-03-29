@@ -25,7 +25,7 @@ class MongoDBPipeline(object):
                     valid = False
                     raise DropItem("Missing {0}!".format(data))
             if valid:
-                self.collection.insert_one({"_id": item["author_id"], dict(item)})
+                self.collection.insert_one(dict(item))
                 log.msg("Author added to MongoDB database!",
                         level=log.DEBUG, spider=spider)
             return item
@@ -38,7 +38,7 @@ class MongoDBPipeline(object):
                     valid = False
                     raise DropItem("Missing {0}!".format(data))
             if valid:
-                self.collection.insert_one({"_id": item["series_id"], dict(item)})
+                self.collection.insert_one(dict(item))
                 log.msg("Series added to MongoDB database!",
                         level=log.DEBUG, spider=spider)
             return item
@@ -51,7 +51,7 @@ class MongoDBPipeline(object):
                     valid = False
                     raise DropItem("Missing {0}!".format(data))
             if valid:
-                self.collection.insert_one({"_id": item["comic_id"], dict(item)})
+                self.collection.insert_one(dict(item))
                 log.msg("Comic added to MongoDB database!",
                         level=log.DEBUG, spider=spider)
             return item
