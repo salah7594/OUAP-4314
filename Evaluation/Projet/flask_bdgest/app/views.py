@@ -60,6 +60,23 @@ def author():
 
     return render_template('author.html', output=output)
 
+def create_series_list(find_mongo):
+    list_document = []
+    for document in find_mongo:
+        document.update({"author_name": author_by_id(document["author_id"])})
+        list_document.append(document)
+    return list_document
+
+def create_comic_list(find_mongo):
+    list_document = []
+    for document in find_mongo:
+        document.update({"author_name": author_by_id(document["author_id"])})
+        document.update({"series_name": series_by_id(document["series_id"])})
+        list_document.append(document)
+    return list_document
+
+
+
 @app.route('/series', methods=['POST'])
 def series():
     output = {}
@@ -78,10 +95,12 @@ def series():
                 else: mongo_formatted_string.update({key: {'$regex': "\\b" + value.strip(), '$options': 'i'}})
 
         if mongo_formatted_string:
-            for document in db["series"].find(mongo_formatted_string):
-                list_document.append(document)
+           # for document in db["series"].find(mongo_formatted_string):
+           #     document.update({"author_name": author_by_id(document["author_id"])})
+           #     list_document.append(document)
 
-            output["list_document"] = list_document
+           # output["list_document"] = list_document
+           output["list_document"] = create_series_list(db["series"].find(mongo_formatted_string))
 
     return render_template('series.html', output=output)
 
@@ -91,7 +110,6 @@ def comic():
     comic_form = ComicForm()
     if comic_form.validate_on_submit():
         list_document = []
-        dict_author = {}
         dict_fetch = {}
 
         for x in ["title", "editor", "collection", "format", "isbn"]:
@@ -105,13 +123,13 @@ def comic():
                 else: mongo_formatted_string.update({key: {'$regex': "\\b" + value.strip(), '$options': 'i'}})
 
         if mongo_formatted_string:
+           # for document in db["comics"].find(mongo_formatted_string):
+           #     document.update({"author_name": author_by_id(document["author_id"])})
+           #     document.update({"series_name": series_by_id(document["series_id"])})
+           #     list_document.append(document)
 
-            for document in db["comics"].find(mongo_formatted_string):
-                list_document.append(document)
-                dict_author[document["author_id"]] = author_by_id(document["author_id"])
-
-            output["list_document"] = list_document
-            # output["dict_author"] = dict_author
+           # output["list_document"] = list_document
+           output["list_document"] = create_comic_list(db["comics"].find(mongo_formatted_string))
 
     return render_template('comic.html', output=output)
 
@@ -119,8 +137,10 @@ def comic():
 def author_id(author_id):
     output = {}
     output["document"] = db["authors"].find_one({"_id": author_id})
-    output["list_comic"] = db["comics"].find({"author_id": author_id})
-    output["list_series"] = db["series"].find({"author_id": author_id})
+    #output["list_comic"] = db["comics"].find({"author_id": author_id})
+    output["list_comic"] = create_comic_list(db["comics"].find({"author_id": author_id}))
+    #output["list_series"] = db["series"].find({"author_id": author_id})
+    output["list_series"] = create_series_list(db["series"].find({"author_id": author_id}))
 
     return render_template('author_id.html', output=output)
 
@@ -129,6 +149,7 @@ def series_id(series_id):
     output = {}
     output["document"] = db["series"].find_one({"_id": series_id})
     output["document"].update({"author_name": author_by_id(output["document"]["author_id"])})
-    output["list_comic"] = db["comics"].find({"series_id": series_id})
+    #output["list_comic"] = db["comics"].find({"series_id": series_id})
+    output["list_comic"] = create_comic_list(db["comics"].find({"series_id": series_id}))
 
     return render_template('series_id.html', output=output)
