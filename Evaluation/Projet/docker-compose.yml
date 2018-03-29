@@ -14,8 +14,6 @@ services:
     container_name: flask_container
     ports:
       - "1000:1000"
-    volumes:
-      - "/flask_bdgest:/home/flask"
     links: 
       - mongo
   scrapy:
