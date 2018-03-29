@@ -80,7 +80,7 @@ class AuthorsSpider(scrapy.Spider):
                     var_url = re.sub('.html$', '__10000.html', var_url) #show all comics of a series
 
                     yield scrapy.Request(var_url, callback=self.parse_series, meta={'var_series_type': var_series_type,
-                                                                                    'var_author_id': authors_item['author_id']})
+                                                                                    'var_author_id': authors_item['_id']})
 
 
         yield authors_item
