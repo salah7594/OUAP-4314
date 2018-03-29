@@ -32,3 +32,9 @@ Deploy the project on a Raspberry Pi:
 .. code-block:: bash
 
     docker-compose -f rpi_docker-compose.yml up
+
+Deploy the project on macOS:
+
+.. code-block:: bash
+
+    docker-compose -f mac_docker-compose.yml up
