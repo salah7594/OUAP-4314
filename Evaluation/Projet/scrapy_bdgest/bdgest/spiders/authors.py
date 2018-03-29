@@ -70,7 +70,8 @@ class AuthorsSpider(scrapy.Spider):
         var_full_name = ""
         for x in ["first_name", "last_name", "nickname"]:
             if authors_item.get(x):
-                var_full_name += authors_item[x] + " "
+                if x=="nickname": var_full_name += '"{0}"'.format(authors_item[x])
+                else: var_full_name += authors_item[x] + " "
         if var_full_name:
             authors_item["full_name"] = var_full_name.rstrip()
         authors_item["url"] = response.url
