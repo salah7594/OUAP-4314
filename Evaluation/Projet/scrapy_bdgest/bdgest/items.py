@@ -17,6 +17,7 @@ class AuthorsItem(scrapy.Item):
     first_name = scrapy.Field()
     last_name = scrapy.Field()
     nickname = scrapy.Field()
+    full_name = scrapy.Field()
     country = scrapy.Field()
     web_page = scrapy.Field()
     birth_date = scrapy.Field()
