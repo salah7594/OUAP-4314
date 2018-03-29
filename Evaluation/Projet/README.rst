@@ -31,4 +31,4 @@ Deploy the project on a Raspberry Pi:
 
 .. code-block:: bash
 
-    docker-compose -f docker-compose_rpi.yml up
+    docker-compose -f rpi_docker-compose.yml up
