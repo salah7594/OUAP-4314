@@ -14,19 +14,15 @@ client = MongoClient("mongo")
 db = client['bdgest']
 
 def series_by_id(id):
-    document = db["series"].find_one({'series_id': id})
+    document = db["series"].find_one({'_id': id})
     return document["name"]
 
 def author_by_id(id):
-    document = db["authors"].find_one({'author_id': id})
-    name = ""
-    for x in ["first_name", "last_name", "nickname"]:
-        if document.get(x):
-            if x == "nickname": name += '"{0}"'.format(document[x])
-            else: name += document[x] + " "
-    return name.rstrip()
+    document = db["authors"].find_one({'_id': id})
+    name = document["full_name"]
+    return name
 
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def home():
 
     author_form = AuthorForm()
@@ -122,7 +118,7 @@ def comic():
 @app.route('/author/<author_id>')
 def author_id(author_id):
     output = {}
-    output["document"] = db["authors"].find_one({"author_id": author_id})
+    output["document"] = db["authors"].find_one({"_id": author_id})
     output["list_comic"] = db["comics"].find({"author_id": author_id})
     output["list_series"] = db["series"].find({"author_id": author_id})
 
@@ -131,7 +127,8 @@ def author_id(author_id):
 @app.route('/series/<series_id>')
 def series_id(series_id):
     output = {}
-    output["document"] = db["series"].find_one({"series_id": series_id})
+    output["document"] = db["series"].find_one({"_id": series_id})
+    output["document"].update({"author_name": author_by_id(output["document"]["author_id"])})
     output["list_comic"] = db["comics"].find({"series_id": series_id})
 
     return render_template('series_id.html', output=output)
