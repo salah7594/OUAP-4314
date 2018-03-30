@@ -49,50 +49,6 @@ parameters: single document
 
 {%- endmacro %}
 
-
-
-{% macro render_table(list_document, header, keys, redirect) -%}
-
-	<table class="highlight">
-		<thead>
-			<tr>
-				{% for x in header %}
-				<th>{{ x }}</th>		
-				{% endfor %}
-			</tr>
-		</thead>
-
-		<tbody>
-
-			{% for x in list_document %}
-			<tr>
-				{% for z in redirect %}
-				{% set id = x[z[1]] %}
-
-				{% if id.startswith("http") %}
-
-				<td><a href="{{ x[z[1]] }}">{{ x[z[2]] }}</a></td>
-
-				{% else %}
-
-				<td><a href="/{{ z[0] }}/{{ x[z[1]] }}">{{ x[z[2]] }}</a></td>
-
-				{% endif %}
-
-				{% endfor %}
-
-				{% for y in keys %}
-				<td>{{ x[y] }}</td>
-				{% endfor %}
-			</tr>
-			{% endfor %}
-
-		</tbody>
-
-	</table>
-
-{%- endmacro %}
-
 {% macro render_card(document) -%}
 
 	<div class="card blue-grey darken-1">
@@ -105,5 +61,28 @@ parameters: single document
 
 {%- endmacro %}
 
-
+{% macro render_table(list_document, header) -%}
+    <table class="highlight">
+        <thead>
+            <tr>
+                {% for column_name in header %}
+                <th>{{ column_name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in list_document %}
+            <tr>
+                {% for key, value in document.items() %}
+                {% if key.startswith("redirect") %}
+                <td><a href="{{ value[0] }}">{{ value[1] }}</a></td> 
+                {% else %}
+                <td>{{ value }}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%- endmacro %}
 

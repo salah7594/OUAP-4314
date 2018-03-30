@@ -1,0 +1,38 @@
+{% from "macros.html" import render_table2 %}
+
+{% from "dictionaries.html" import dict_author, dict_series, dict_comic %}
+
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+	<div class="container">
+	<div class="row">
+    {% set header = ["First name", "Last name", "Nickname"] %}
+        <table class="highlight">
+               <thead>
+                   <tr>
+                       {% for column_name in header %}
+                       <th>{{ column_name }}</th>
+                       {% endfor %}
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for document in output["list_document"] %}
+                   <tr>
+                       {% for key, value in document.items() %}      
+                       <td>{{ value }}</td>
+                       {% endfor %}
+                   </tr>
+                   {% endfor %}
+               </tbody>
+        </table>
+
+    </div>
+    </div>
+
+{% endblock %}

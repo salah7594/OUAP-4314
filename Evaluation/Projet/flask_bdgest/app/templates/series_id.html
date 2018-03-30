@@ -1,6 +1,6 @@
 {% from "macros.html" import render_card, render_table %}
 
-{% from "dictionaries.html" import dict_author, dict_series, dict_comic %}
+{% from "dictionaries.html" import header_comic %}
 
 {% extends "base.html" %}
 
@@ -20,7 +20,7 @@
 
 		<h4 class="pink-text">Comics</h4>
 
-			{{ render_table(output["list_comic"], dict_comic["header"], dict_comic["keys"], dict_comic["redirect"]) }}
+			{{ render_table(output["list_comic"], header_comic) }}
 
 	</div>
 
