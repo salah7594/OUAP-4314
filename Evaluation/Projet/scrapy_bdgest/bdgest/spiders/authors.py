@@ -63,10 +63,10 @@ class AuthorsSpider(scrapy.Spider):
                 authors_item['web_page'] = x.xpath('./a/@href').extract()[0]
             elif var_label =='Naissance':
                 if len(x.xpath('./text()').extract())>0:
-                    authors_item["birth_date"] = re.findall('\d+\/\d+\/\d+', x.xpath('./text()').extract()[0])[0]
+                    authors_item["birth_date"] = datetime.strptime(re.findall('\d+\/\d+\/\d+', x.xpath('./text()').extract()[0])[0], "%d/%m/%Y")
             elif var_label =='Décès':
                 if len(x.xpath('./text()').extract())>0:
-                    authors_item["death_date"] = re.findall('\d+\/\d+\/\d+', x.xpath('./text()').extract()[0])[0]
+                    authors_item["death_date"] = datetime.strptime(re.findall('\d+\/\d+\/\d+', x.xpath('./text()').extract()[0])[0], "%d/%m/%Y")
 
         var_full_name = ""
         for x in ["first_name", "last_name", "nickname"]:
