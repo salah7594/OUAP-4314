@@ -22,10 +22,9 @@ def author_by_id(id):
     name = document["full_name"]
     return name
 
-def table_comic(find_mongo):
+def table_comic(query):
     list_document = []
-    for document in find_mongo:
-        print(document)
+    for document in query:
         document_updated = {"redirect_comic": [document["url"], document["title"]]}
         document_updated.update({"redirect_series": ["/series/{0}".format(document["series_id"]), series_by_id(document["series_id"])]})
         document_updated.update({"redirect_author": ["/author/{0}".format(document["author_id"]), author_by_id(document["author_id"])]})
@@ -35,15 +34,35 @@ def table_comic(find_mongo):
 
     return list_document
 
-def table_series(find_mongo):
+def table_series(query):
     list_document = []
-    for document in find_mongo:
+    for document in query:
         document_updated = {"redirect_series": ["/series/{0}".format(document["_id"]), document["name"]]}
         document_updated.update({"redirect_author": ["/author/{0}".format(document["author_id"]), author_by_id(document["author_id"])]})
         document_updated.update({key: (document[key] if document.get(key) else "") for key in ("genre", "origin", "lang")})
         list_document.append(document_updated)
 
     return list_document
+
+#def kardesh(query):
+#    list_document = []
+#    for key, value in query:
+#        if query.get("author_name"):
+#            list_author_id = []
+#            query_match = {{'$or': [{'last_name': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
+#                                                 {'first_name': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
+#                                                 {'nickname': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
+#                                                 ]}}
+#            for document in db["authors"].find(mongo_formatted_string):
+#                list_author_id.append(document["_id"])
+#    
+#    for author_id in list_author_id:
+#        new_find_mongo = find_mongo
+#        new_find_mongo.update({"author_id"})
+#    for document in find_mongo:
+#        print("uh")
+#
+#    return list_document
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -76,8 +95,7 @@ def author():
 
         if mongo_formatted_string:
             for document in db["authors"].find(mongo_formatted_string):
-                ausweis = document["_id"]
-                document_updated = {"redirect_author": ["/author/{0}".format(ausweis), "Go."]}
+                document_updated = {"redirect_author": ["/author/{0}".format(document["_id"]), "Go."]}
                 document_updated.update({key: (document[key] if document.get(key) else "") for key in ("first_name", "last_name", "nickname", "birth_date", "death_date")})
                 if document_updated.get("death_date"): document_updated.update({"death_date": "{:%d-%m-%Y}".format(document["death_date"])})
                 if document_updated.get("birth_date"): document_updated.update({"birth_date": "{:%d-%m-%Y}".format(document["birth_date"])})
@@ -102,8 +120,10 @@ def series():
         for key, value in dict_fetch.items():
             if dict_fetch.get(key):
                 if key == 'status': mongo_formatted_string.update({key: int(value)})
+                #if key = "author_name": mongo_formatted_string.update({key: value})
                 else: mongo_formatted_string.update({key: {'$regex': "\\b" + value.strip(), '$options': 'i'}})
-
+        
+        print(mongo_formatted_string)
         if mongo_formatted_string:
             output["list_document"] = table_series(db["series"].find(mongo_formatted_string))
 
