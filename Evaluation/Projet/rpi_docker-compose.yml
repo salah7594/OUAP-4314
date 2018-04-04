@@ -12,6 +12,8 @@ services:
       dockerfile: Dockerfile
     image: flask_image
     container_name: flask_container
+    volumes:
+      - "/home/pi/corners/bdgest/Evaluation/Projet/flask_bdgest:/home/flask"
     ports:
       - "1000:1000"
     links: 
@@ -22,5 +24,7 @@ services:
       dockerfile: Dockerfile
     image: scrapy_image
     container_name: scrapy_container
+    volumes:
+      - "/home/pi/corners/bdgest/Evaluation/Projet/scrapy_bdgest:/home/scrapy"
     links: 
       - mongo
