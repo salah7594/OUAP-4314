@@ -158,6 +158,12 @@ def author_id(author_id):
     output["list_comic"] = table_comic(db["comics"].find({"author_id": author_id}))
     output["list_series"] = table_series(db["series"].find({"author_id": author_id}))
 
+    pipeline = [
+        {"$match": {"author_id": author_id}},
+        {"$group": {"_id":"$genre", "count":{"$sum":1}}}
+    ]
+    output["pie"] = db.command('aggregate', 'series', pipeline=pipeline, explain=False)
+
     return render_template('author_id.html', output=output)
 
 @app.route('/series/<series_id>')
