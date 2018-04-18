@@ -44,25 +44,34 @@ def table_series(query):
 
     return list_document
 
-#def kardesh(query):
-#    list_document = []
-#    for key, value in query:
-#        if query.get("author_name"):
-#            list_author_id = []
-#            query_match = {{'$or': [{'last_name': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
-#                                                 {'first_name': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
-#                                                 {'nickname': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
-#                                                 ]}}
-#            for document in db["authors"].find(mongo_formatted_string):
-#                list_author_id.append(document["_id"])
-#    
-#    for author_id in list_author_id:
-#        new_find_mongo = find_mongo
-#        new_find_mongo.update({"author_id"})
-#    for document in find_mongo:
-#        print("uh")
-#
-#    return list_document
+def kardesh(query):
+    if query.get("author_name"):
+        list_author_id = []
+        fetch_name = query["author_name"]
+
+        query_match = {}
+        query_match.update({'$or': [{'last_name': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
+                                {'first_name': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
+                                {'nickname': {'$regex': "\\b" + fetch_name, '$options': 'i'}},
+                                ]})
+        for document in db["authors"].find(query_match):
+            list_author_id.append(document["_id"])
+        query.pop("author_name")
+        query.update({"author_id": {"$in": list_author_id}})
+    
+    if query.get("series_name"):
+        list_series_id = []
+        fetch_name = query["series_name"]
+
+        query_match = {}
+        query_match.update({"name": {'$regex': "\\b" + fetch_name.strip(), '$options': 'i'}})
+        
+        for document in db["series"].find(query_match):
+            list_series_id.append(document["_id"])
+        query.pop("series_name")
+        query.update({"series_id": {"$in": list_series_id}})
+    
+    return query
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -110,7 +119,6 @@ def series():
     output = {}
     series_form = SeriesForm()
     if series_form.validate_on_submit():
-        list_document = []  
         dict_fetch = {}
         for x in ['name', 'genre', 'author_name', 'lang', 'origin', 'status']:
             dict_fetch[x] = request.form.get(x, None)
@@ -118,13 +126,13 @@ def series():
         mongo_formatted_string = {}
     
         for key, value in dict_fetch.items():
-            if dict_fetch.get(key):
+            if value:
                 if key == 'status': mongo_formatted_string.update({key: int(value)})
-                #if key = "author_name": mongo_formatted_string.update({key: value})
+                elif key == "author_name": mongo_formatted_string.update({key: value})
                 else: mongo_formatted_string.update({key: {'$regex': "\\b" + value.strip(), '$options': 'i'}})
         
-        print(mongo_formatted_string)
         if mongo_formatted_string:
+            mongo_formatted_string = kardesh(mongo_formatted_string)
             output["list_document"] = table_series(db["series"].find(mongo_formatted_string))
 
     return render_template('series.html', output=output)
@@ -135,18 +143,20 @@ def comic():
     comic_form = ComicForm()
     if comic_form.validate_on_submit():
         dict_fetch = {}
-
-        for x in ["title", "editor", "collection", "format", "isbn"]:
+        for x in ["title", "editor", "collection", "format", "isbn", "author_name", "series_name"]:
             dict_fetch[x] = request.form.get(x, None)
 
         mongo_formatted_string = {}
 
         for key, value in dict_fetch.items():
-            if dict_fetch.get(key):
+            if value:
                 if key == "isbn": mongo_formatted_string.update({key: {'$regex': value, '$options': 'i'}})
+                elif key == "author_name": mongo_formatted_string.update({key: value})
+                elif key == "series_name": mongo_formatted_string.update({key: value})
                 else: mongo_formatted_string.update({key: {'$regex': "\\b" + value.strip(), '$options': 'i'}})
 
         if mongo_formatted_string:
+            mongo_formatted_string = kardesh(mongo_formatted_string)
             output["list_document"] = table_comic(db["comics"].find(mongo_formatted_string))
 
     return render_template('comic.html', output=output)

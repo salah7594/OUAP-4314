@@ -23,3 +23,5 @@ class ComicForm(FlaskForm):
     format = StringField('Format')
     isbn = StringField('ISBN')
     search = SubmitField('search')
+    author_name = StringField('Author')
+    series_name = StringField('Series')
