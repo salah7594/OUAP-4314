@@ -67,3 +67,17 @@ From the root of the project, execute the following command:
 .. code-block:: bash
 
     > scrapy crawl authors
+
+Inside the bdgest directory:
+
+- items.py defines how each author, series and comic items are defined
+- pipelines.py defines how each item is inserted to the Mongo database
+- middlewares.py defines how the middleware extracts the response pages and how the spider does the actual scraping. In our case, it is left as it is.
+
+Inside the spiders folder is the authors.py script which defines the spider, i.e.:
+
+- the starting urls (every author from A to Z with the addition of names starting with special characters)
+- the parse functions and ultimately the creation of the items which are then sent to the pipeline
+
+N.B.: the spider as it is only retrieves 20 authors for each letter of the alphabet (+ special character).
+If you wish to extract more data, feel free to modify or remove the slice at line 32 in the authors.py spider script.
