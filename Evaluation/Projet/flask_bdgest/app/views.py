@@ -12,6 +12,7 @@ db = client['bdgest']
 def series_by_id(id):
     """
     Returns a series name based on its id.
+    It happens that series name will not exist, in which case "N/A" is returned.
 
     Args:
         id: a series id
@@ -20,7 +21,11 @@ def series_by_id(id):
         document["name"]: the name of a series
     """
     document = db["series"].find_one({'_id': id})
-    return document["name"]
+    
+    if document:
+        return document["name"]
+    else:
+        return "N/A"
 
 def author_by_id(id):
     """
