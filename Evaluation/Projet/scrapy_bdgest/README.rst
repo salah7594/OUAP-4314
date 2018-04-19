@@ -80,4 +80,4 @@ Inside the spiders folder is the authors.py script which defines the spider, i.e
 - the parse functions and ultimately the creation of the items which are then sent to the pipeline
 
 N.B.: the spider as it is only retrieves 20 authors for each letter of the alphabet (+ special character).
-If you wish to extract more data, feel free to modify or remove the slice at line 32 in the authors.py spider script.
+If you wish to extract more data, feel free to modify or remove the slice at line 32 in the authors.py spider `script <https://github.com/nicolasvo95/OUAP-4314/blob/master/Evaluation/Projet/scrapy_bdgest/bdgest/spiders/authors.py>`_
