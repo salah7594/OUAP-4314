@@ -16,4 +16,4 @@ Inside the templates folder:
 - author_id.html defines the page of an author in particular
 - series_id.html defines the page of a series in particular
 
-The static folder contains the CSS and JS libraries responsible for the appearance and mobile responsivity.
+The static folder contains the CSS and JS libraries responsible for the appearance and mobile responsivity of the web app.
