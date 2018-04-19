@@ -1,3 +1,11 @@
+{#
+
+The render_card function displays the fields of an author as they are extracted from the database.
+The visualizations require the importation of HighchartsJS libraries.
+The series and comics tables are rendered with render_table and with the list_series and list_comic from the output dictionary.
+
+#}
+
 {% from "macros.html" import render_card, render_table %}
 
 {% from "dictionaries.html" import header_author, header_series, header_comic %}
@@ -27,6 +35,9 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+<div id="container_line" style="height: 400px"></div>
+
 <script>
 
 Highcharts.chart('container', {
@@ -59,11 +70,27 @@ Highcharts.chart('container', {
         name: 'Genres',
         colorByPoint: true,
         data: [
-        {%for x in output["pie"]["cursor"]["firstBatch"]%}
+        {%for x in output["pie"]%}
         {name: '{{x["_id"]}}' , y: {{x["count"]|int}}    },
         {%endfor%}
 
         ]
+    }]
+});
+
+
+Highcharts.chart('container_line', {
+    xAxis: {
+        categories: {{ output["legal_deposit"]["year"] }}
+    },
+
+    title: {
+        text: 'Number of comics published per year'
+    },
+    series: [
+    {   name: "Number of comics", 
+        data: {{ output["legal_deposit"]["count"] }},
+        //lineWidth: 5
     }]
 });
 

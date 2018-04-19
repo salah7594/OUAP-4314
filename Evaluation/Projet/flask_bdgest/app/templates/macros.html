@@ -1,4 +1,5 @@
-"""
+{#
+
 macro: render_form
 return: form with fields and labels
 parameters:
@@ -28,8 +29,8 @@ parameters:
 macro: render_card
 return: card with all the current author or series informations
 parameters: single document
-"""
 
+#}
 
 {% macro render_form(title, action_url, hidden_tag, search, list_label_field) -%}
 
@@ -75,6 +76,7 @@ parameters: single document
             <tr>
                 {% for key, value in document.items() %}
                 {% if key.startswith("redirect") %}
+                {# If the key starts with redirect as seen in the views.py file, it means the link sends to the specified route. #}
                 <td><a href="{{ value[0] }}">{{ value[1] }}</a></td> 
                 {% else %}
                 <td>{{ value }}</td>
