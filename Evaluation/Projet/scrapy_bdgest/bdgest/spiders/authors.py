@@ -1,6 +1,5 @@
 """
-how to retrieve data from child yield
-if author already in database, do not parse him again?
+The database is dropped at start.
 """
 
 # -*- coding: utf-8 -*-
@@ -23,21 +22,30 @@ class AuthorsSpider(scrapy.Spider):
 
     name = 'authors'
     allowed_domains = ['bedetheque.com']
-#    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_{0}.html'.format(x) for x in string.ascii_lowercase]
-#    start_urls.append('https://www.bedetheque.com/liste_auteurs_BD_0.html')
-    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_a.html']
+    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_{0}.html'.format(x) for x in string.ascii_lowercase]
+    start_urls.append('https://www.bedetheque.com/liste_auteurs_BD_0.html')
+#    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_a.html']
     def parse(self, response):
 
         """Parse the start_urls, fetch author page url and call parse_authors with this url as response"""
 
-        for author_page in response.xpath('//ul[@class="nav-liste"]/li')[-20:-10]:
+        for author_page in response.xpath('//ul[@class="nav-liste"]/li')[-30:-10]:
             var_url = author_page.xpath("./a/@href").extract()[0]
 
             yield scrapy.Request(var_url, callback=self.parse_authors)
 
     def parse_authors(self, response):  
         """
+        Parses the author's page. Retrieves their bdgest id, name, last name, nickname, country, personal webpage,
+        birth date, death date and image url. A full name variable is created by combining name, last name and nickname.
 
+        Args:
+            response: a response page which is an author's page
+
+        Yield:
+            - scrapy.Request with the parse_series function as callback. The series type and author id are passed to it
+            through the meta dictionary.
+            - authors_item when all of his series and comics have been parsed.
         """
         authors_item = AuthorsItem()
 
@@ -96,8 +104,22 @@ class AuthorsSpider(scrapy.Spider):
     def parse_series(self, response):
 
         """
-        comics_item: encrage, lettrage, couverture
-        editor: in li/text() or span/text()
+        Parses the series page. Retrieves: bdgest id, genre, publishing status (parution), volume (tome),
+        origin, language.
+
+        On the series page, there are actually many informations about the comics. In a first time, 
+        this data about the comics was found sufficient, since it only lacks the comic's rating, 
+        image and summary. Therefore, much less time and resources are spent parsing the individual
+        page of each comic. However, the latter should be parsed in the future.
+        The data related to comics: bdgest id, person in charge of scenario, illustration, coloring, 
+        translation, date of legal deposit, editor, collection, format, ISBN, number of pages.
+
+        Args:
+            response: a response which is a series page
+
+        Yield:
+            series_item: once all comics have been parsed
+            comics_item
         """
 
         series_item = SeriesItem()
@@ -135,8 +157,6 @@ class AuthorsSpider(scrapy.Spider):
             var_title = x.xpath('.//span[@itemprop="name"]/text()').extract()[1].strip()
             var_title = re.sub('\s+', ' ', var_title)
             if var_title.startswith('.'): var_title = var_title[2:]
-            # comics_item["title"] = var_title
-            # comics_item["url"] = var_url
 
             comics_item = ComicsItem()
             comics_item["title"] = var_title
@@ -173,7 +193,6 @@ class AuthorsSpider(scrapy.Spider):
                         if len(y.xpath('./span/text()').extract())>0: comics_item["isbn"] = y.xpath('./span/text()').extract()[0]
                     elif "planche" in var_label:
                         if len(y.xpath('./span/text()').extract())>0: comics_item["pages"] = y.xpath('./span/text()').extract()[0]  
-
             yield comics_item
 
         yield series_item
