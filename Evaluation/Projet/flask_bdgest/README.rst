@@ -8,7 +8,7 @@ Running run.py launches the web application. Inside the app folder:
 
 Inside the templates folder:
 
-- macro.html contains the jinja macros which render the forms, tables of results and information cards
+- macros.html contains the jinja macros which render the forms, tables of results and information cards
 - dictionaries.html contains some variables so that they do not need to be redefined at many places
 - base.html is the base template for all pages of the web application
 - index.html defines the homepage and its three forms
