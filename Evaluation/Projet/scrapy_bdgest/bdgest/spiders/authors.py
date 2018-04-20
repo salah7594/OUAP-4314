@@ -22,9 +22,9 @@ class AuthorsSpider(scrapy.Spider):
 
     name = 'authors'
     allowed_domains = ['bedetheque.com']
-#    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_{0}.html'.format(x) for x in string.ascii_lowercase]
-#    start_urls.append('https://www.bedetheque.com/liste_auteurs_BD_0.html')
-    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_a.html']
+    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_{0}.html'.format(x) for x in string.ascii_lowercase]
+    start_urls.append('https://www.bedetheque.com/liste_auteurs_BD_0.html')
+#    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_a.html']
     def parse(self, response):
 
         """Parse the start_urls, fetch author page url and call parse_authors with this url as response"""
