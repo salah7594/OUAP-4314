@@ -13,18 +13,10 @@ parameters:
 macro: render_table
 return: table of entries, URLs and redirections of a list of documents
 parameters: 
-	- list_document: list of documents based on their IDs (see views.py: author_id, series_id)
+	- list_document: list of documents (see table_series, table_comic and the content of the author route in views.py)
 	- header: list with the table's header strings
-	- keys: list of the keys (fields) to display for a document in list_document
-	- redirect: list of the Flask redirects and/or external URLs, where each element is a list of length 3:
-		1) route name
-		2) route argument (an ID)
-		3) name of the link (the name of the author, series or comic)
-	But when dealing with a regular URL, only elements 2) and 3) are required:
-		2) URL
-		3) name of the link
-	The macro knows itself if it's a redirection or a regular URL using a if/else statement.
-
+Redirections to routes are detected with their keys which start with "redirect".
+    
 
 macro: render_card
 return: card with all the current author or series informations
