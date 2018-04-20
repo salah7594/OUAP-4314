@@ -2,7 +2,7 @@
 How to launch the project
 =========================
 
-You may first need to pull the Docker image for mongo from dockerhub:
+You may first need to pull the Docker image for MongoDB from dockerhub:
 
 .. code-block:: bash
 
@@ -59,3 +59,6 @@ Instead of:
 .. code-block:: bash
     
     client = MongoClient("mongo")
+
+N.B. 2: the spider as it is only retrieves 20 authors for each letter of the alphabet (+ special character).
+If you wish to extract more data, feel free to modify or remove the slice at line 32 in the authors.py spider `script <https://github.com/nicolasvo95/OUAP-4314/blob/master/Evaluation/Projet/scrapy_bdgest/bdgest/spiders/authors.py>`_
