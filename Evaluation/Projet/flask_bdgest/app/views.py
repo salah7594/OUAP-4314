@@ -57,6 +57,7 @@ def table_comic(query):
         document_updated = {"redirect_comic": [document["url"], document["title"]]}
         document_updated.update({"redirect_series": ["/series/{0}".format(document["series_id"]), series_by_id(document["series_id"])]})
         document_updated.update({"redirect_author": ["/author/{0}".format(document["author_id"]), author_by_id(document["author_id"])]})
+        document_updated.update({"redirect_comic": ["/comic/{0}".format(document["_id"]), document["title"]]})
         document_updated.update({key: (document[key] if document.get(key) else "") for key in ("scenario", "illustration", "editor", "legal_deposit")})
         if document_updated.get("legal_deposit"): document_updated.update({"legal_deposit": "{:%m-%Y}".format(document["legal_deposit"])})
         list_document.append(document_updated)
@@ -298,3 +299,21 @@ def series_id(series_id):
     output["list_comic"] = table_comic(db["comics"].find({"series_id": series_id}))
 
     return render_template('series_id.html', output=output)
+
+@app.route('/comic/<comic_id>')
+def comic_id(comic_id):
+    """
+    The page specific to a comic. It displays information about the comic.
+
+    Args:
+        series_id: a comic id
+
+    Returns:
+        render_template: the template file is called comic_id.html. 
+    """
+    output = {}
+    output["document"] = db["comics"].find_one({"_id": comic_id})
+    #output["document"].update({"author_name": author_by_id(output["document"]["author_id"])})
+    #output["document"].update({"series_name": series_by_id(output["document"]["series_id"])})
+
+    return render_template('comic_id.html', output=output)
