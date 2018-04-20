@@ -35,6 +35,7 @@ Series:
 * list of volume ids
 * origin (country or continent)
 * language
+* description
 
 Comics:
 
@@ -53,6 +54,7 @@ Comics:
 * ISBN (International Standard Book Number)
 * number of pages
 * image
+* description
 
 Storage
 .......
