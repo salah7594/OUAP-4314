@@ -22,9 +22,9 @@ class AuthorsSpider(scrapy.Spider):
 
     name = 'authors'
     allowed_domains = ['bedetheque.com']
-    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_{0}.html'.format(x) for x in string.ascii_lowercase]
-    start_urls.append('https://www.bedetheque.com/liste_auteurs_BD_0.html')
-#    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_a.html']
+#    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_{0}.html'.format(x) for x in string.ascii_lowercase]
+#    start_urls.append('https://www.bedetheque.com/liste_auteurs_BD_0.html')
+    start_urls = ['https://www.bedetheque.com/liste_auteurs_BD_a.html']
     def parse(self, response):
 
         """Parse the start_urls, fetch author page url and call parse_authors with this url as response"""
@@ -131,6 +131,7 @@ class AuthorsSpider(scrapy.Spider):
         series_item["name"] = var_series_name
         series_item["_id"] = var_series_id
         series_item["author_id"] = var_author_id
+        series_item["description"] = response.xpath('//meta[@name="description"]/@content').extract()[0]
 
         for x in response.xpath('//ul[@class="serie-info"]/li'):
             var_label = x.xpath('./label/text()').extract()[0].split(" ")[0]
@@ -181,7 +182,9 @@ class AuthorsSpider(scrapy.Spider):
                     elif "traduction" in var_label:
                         if len(y.xpath('./span/text()').extract())>0: comics_item["translation"] = y.xpath('./span/text()').extract()[0]
                     elif "dépot" in var_label:
-                        if len(y.xpath('./text()').extract())>0: comics_item["legal_deposit"] = datetime.strptime(y.xpath('./text()').extract()[1].strip(), "%m/%Y")
+                        if len(y.xpath('./text()').extract())>0: 
+                            if y.xpath('./text()').extract()[1].strip():
+                                comics_item["legal_deposit"] = datetime.strptime(y.xpath('./text()').extract()[1].strip(), "%m/%Y")
                     elif "editeur" in var_label:
                         if len(y.xpath('./text()').extract())>0: comics_item["editor"] = y.xpath('./text()').extract()[0]
                         elif len(y.xpath('./span/text()').extract())>0: comics_item["editor"] = y.xpath('./span/text()').extract()[0]                       
@@ -193,6 +196,20 @@ class AuthorsSpider(scrapy.Spider):
                         if len(y.xpath('./span/text()').extract())>0: comics_item["isbn"] = y.xpath('./span/text()').extract()[0]
                     elif "planche" in var_label:
                         if len(y.xpath('./span/text()').extract())>0: comics_item["pages"] = y.xpath('./span/text()').extract()[0]  
-            yield comics_item
+
+            yield scrapy.Request(var_url, callback=self.parse_comics, meta={"comics_item": comics_item})
 
         yield series_item
+
+
+    def parse_comics(self, response):
+        """
+        Parses the comics page. Most of the scraping was previously done within the parse_series function.
+        This parse function adds the description and image fields to the comic item.
+        """
+        comics_item = response.meta['comics_item']
+        comics_item["description"] = response.xpath('//meta[@name="description"]/@content').extract()[0]
+        comics_item["image"] = response.xpath('//img[@itemprop="image"]/@src').extract()[0]
+
+        yield comics_item
+
