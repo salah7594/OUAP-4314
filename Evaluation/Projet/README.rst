@@ -14,12 +14,12 @@ Navigate to OUAP-4314/Evaluation/Projet and start the containers:
 
     docker-compose up
 
-You can also start the containers in detached mode and check their logs:
+You can also start the containers in detached mode and check their logs in real time:
 
 .. code-block:: bash
 
     docker-compose up -d
-    docker-compose logs
+    docker-compose logs -f
 
 Check if the containers are up:
 
