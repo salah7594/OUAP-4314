@@ -15,5 +15,6 @@ Inside the templates folder:
 - author.html, series.html and comic.html define the result pages for each author, series and comic respectively
 - author_id.html defines the page of an author in particular
 - series_id.html defines the page of a series in particular
+- comic_id.html defines the page of a comic
 
 The static folder contains the CSS and JS libraries responsible for the appearance and mobile responsivity of the web app.
