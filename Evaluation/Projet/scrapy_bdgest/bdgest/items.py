@@ -36,6 +36,7 @@ class SeriesItem(scrapy.Item):
     volume = scrapy.Field()
     origin = scrapy.Field()
     lang = scrapy.Field()
+    description = scrapy.Field()
 
 class ComicsItem(scrapy.Item):
 
@@ -56,7 +57,7 @@ class ComicsItem(scrapy.Item):
     pages = scrapy.Field()
     translation = scrapy.Field()
     image = scrapy.Field()
-
+    description = scrapy.Field()
 
 
 
