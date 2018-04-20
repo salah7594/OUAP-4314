@@ -107,10 +107,7 @@ class AuthorsSpider(scrapy.Spider):
         Parses the series page. Retrieves: bdgest id, genre, publishing status (parution), volume (tome),
         origin, language.
 
-        On the series page, there are actually many informations about the comics. In a first time, 
-        this data about the comics was found sufficient, since it only lacks the comic's rating, 
-        image and summary. Therefore, much less time and resources are spent parsing the individual
-        page of each comic. However, the latter should be parsed in the future.
+        On the series page, there are actually many informations about the comics.
         The data related to comics: bdgest id, person in charge of scenario, illustration, coloring, 
         translation, date of legal deposit, editor, collection, format, ISBN, number of pages.
 
@@ -119,7 +116,6 @@ class AuthorsSpider(scrapy.Spider):
 
         Yield:
             series_item: once all comics have been parsed
-            comics_item
         """
 
         series_item = SeriesItem()
@@ -164,7 +160,6 @@ class AuthorsSpider(scrapy.Spider):
             comics_item["url"] = var_url
             comics_item["author_id"] = var_author_id
             comics_item["series_id"] = var_series_id
-            # comics_item["image"] = 
 
             for y in x.xpath('.//ul[@class="infos"]/li'):
 
@@ -206,6 +201,12 @@ class AuthorsSpider(scrapy.Spider):
         """
         Parses the comics page. Most of the scraping was previously done within the parse_series function.
         This parse function adds the description and image fields to the comic item.
+
+        Args:
+            response: a comic response page
+
+        Yield:
+            comics_item
         """
         comics_item = response.meta['comics_item']
         comics_item["description"] = response.xpath('//meta[@name="description"]/@content').extract()[0]
