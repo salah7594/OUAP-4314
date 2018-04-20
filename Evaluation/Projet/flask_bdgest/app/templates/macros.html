@@ -50,15 +50,39 @@ parameters: single document
 
 {%- endmacro %}
 
-{% macro render_card(document) -%}
+{% macro render_card(document, dict_field) -%}
+
+{#
+
+		{% for key, value in document.items() %}
+            {% if key.startswith("url") %}
+            url: <a href="{{ value }}">{{ value }}</a><br>
+            {% else %}
+			{{ key }}: {{ value }}<br>
+            {% endif %}
+		{% endfor %}
+#}
 
 	<div class="card blue-grey darken-1">
 	<div class="card-content white-text">
-		{% for key, value in document.items() %}
-			{{ key }}: {{ value }}<br>
-		{% endfor %}
+        {% for key, value in dict_field.items() %}
+            {% if document.get(key) %}
+                {% if key.startswith("url") %}
+                {{ value }}: <a href="{{ document[key] }}">{{ document[key] }}</a><br>
+                {% else %}
+                {{ value }}: {{ document[key] }}<br>
+                {% endif %}
+            {% endif %}
+        {% endfor%}
 	</div>
 	</div>
+
+    {% if document.get("description") %}
+    <h5>Description</h5>
+    <p>
+    {{ document["description"] }}
+    </p>
+    {% endif %}
 
 {%- endmacro %}
 
