@@ -178,6 +178,8 @@ class AuthorsSpider(scrapy.Spider):
                         if len(y.xpath('./span/text()').extract())>0: comics_item["translation"] = y.xpath('./span/text()').extract()[0]
                     elif "dépot" in var_label:
                         if len(y.xpath('./text()').extract())>0: 
+                            # Even if the list is not empty, the actual legal deposit date can be an empty string.
+                            # This additional condition prevents a spider error from occurring.
                             if y.xpath('./text()').extract()[1].strip():
                                 comics_item["legal_deposit"] = datetime.strptime(y.xpath('./text()').extract()[1].strip(), "%m/%Y")
                     elif "editeur" in var_label:
