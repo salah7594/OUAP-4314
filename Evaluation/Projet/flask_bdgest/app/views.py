@@ -152,7 +152,7 @@ def author():
         render_template: the template page is author.html and the output contains first_name, last_name, nickname, birth_date and death_date.
         Birth_date and death_date are datetime variables which are formatted into day-month-year format.
         The page also includes a redirection to a specific author's page thanks to the redirect_author added to the returned document.
-        This redirect_author is processed differently from the rest. It is further explained in the jinja template macro.html.
+        This redirect_author is processed differently from the rest. It is further explained in the jinja template macros.html.
     """
     output = {}
     author_form = AuthorForm()
