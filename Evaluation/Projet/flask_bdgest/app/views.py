@@ -313,7 +313,5 @@ def comic_id(comic_id):
     """
     output = {}
     output["document"] = db["comics"].find_one({"_id": comic_id})
-    #output["document"].update({"author_name": author_by_id(output["document"]["author_id"])})
-    #output["document"].update({"series_name": series_by_id(output["document"]["series_id"])})
 
     return render_template('comic_id.html', output=output)
